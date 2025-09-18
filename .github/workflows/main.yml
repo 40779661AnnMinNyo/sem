@@ -1,0 +1,33 @@
+name: A workflow for my Hello World App
+on: push
+
+jobs:
+  build:
+    name: Hello world action
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 18
+        uses: actions/setup-java@v4
+        with:
+          java-version: '18'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compile with Maven
+        run: mvn -B compile
+
+      - name: Build Docker Image
+        run: docker build -t semimage .
+
+      - name: Run Docker Container
+        run: docker run --rm --name semcontainer -d semimage
+
+      - name: Wait for container startup
+        run: sleep 5
+
+      - name: View Logs
+        run: docker logs semcontainer
