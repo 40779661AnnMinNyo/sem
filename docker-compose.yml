@@ -4,7 +4,7 @@ services:
   app:
     build: .
 
-  # db is is db folder
+  # db is is db folder1
   db:
     build: db/.
     restart: always
