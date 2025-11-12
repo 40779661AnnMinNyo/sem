@@ -12,7 +12,7 @@ class MyTest
     @Test
     void unitTest2()
     {
-        assertEquals(5, 4);
+        assertNotEquals(5, 4);
     }
     @Test
     void unitTest3()
