@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salaries by Title</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Verdana, sans-serif;
+            margin: 30px;
+            background-color: #f8f9fa;
+        }
+        h2 {
+            color: #333;
+        }
+        th, td {
+            font-size: 14px;
+            border: solid 1px #ddd;
+            border-collapse: collapse;
+            padding: 6px 10px;
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .showData {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h2>Salaries by Title</h2>
+<div class="showData">Loading data...</div>
+
+<script>
+    // Read the "title" parameter from the URL (e.g., ?title=Manager)
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get('title') || 'Manager'; // default if not provided
+
+    // Backend API endpoint
+    const URL = `http://${window.location.hostname}:8080/app/salaries_title?title=${title}`;
+
+    // Fetch JSON data from backend
+    $.getJSON(URL)
+        .done(function(data) {
+            if (!data || data.length === 0) {
+                $(".showData").html("<p class='error'>No records found for title: " + title + "</p>");
+                return;
+            }
+
+            // Get column names dynamically
+            const columns = Object.keys(data[0]);
+
+            // Create table element
+            let table = "<table><thead><tr>";
+            columns.forEach(col => {
+                table += `<th>${col}</th>`;
+            });
+            table += "</tr></thead><tbody>";
+
+            // Fill table with data
+            data.forEach(row => {
+                table += "<tr>";
+                columns.forEach(col => {
+                    table += `<td>${row[col]}</td>`;
+                });
+                table += "</tr>";
+            });
+            table += "</tbody></table>";
+
+            // Display the table
+            $(".showData").html(table);
+        })
+        .fail(function() {
+            $(".showData").html("<p class='error'>Failed to load data from server.</p>");
+        });
+</script>
+</body>
+</html>

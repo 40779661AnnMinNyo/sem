@@ -71,7 +71,7 @@ public class App {
     /**
      * Gets a list of employees by role (e.g., 'Manager')
      */
-    public ArrayList<Employee> getSalariesByRole(String role) {
+    public ArrayList<Employee> getSalariesByRole(@RequestParam String title) {
         ArrayList<Employee> employees = new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
@@ -88,7 +88,7 @@ public class App {
                             "AND departments.dept_no = dept_emp.dept_no " +
                             "AND dept_manager.dept_no = dept_emp.dept_no " +
                             "AND dept_manager.to_date = '9999-01-01' " +
-                            "AND titles.title = '" + role + "'";
+                            "AND titles.title = '" + title + "'";
 
             ResultSet rset = stmt.executeQuery(query);
 
