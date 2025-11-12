@@ -3,17 +3,28 @@ package com.napier.sem;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+@SpringBootApplication
+@RestController
 
 public class App {
     /**
      * Connection to MySQL database.
      */
-    private Connection con = null;
+    private static Connection con = null;
 
     /**
      * Connect to the MySQL database.
      */
-    public void connect(String location, int delay) {
+    public static void connect(String location, int delay) {
         try {
             // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -46,7 +57,7 @@ public class App {
     /**
      * Disconnect from the MySQL database.
      */
-    public void disconnect() {
+    public static void disconnect() {
         if (con != null) {
             try {
                 // Close connection
@@ -149,6 +160,40 @@ public class App {
             e.printStackTrace();
         }
     }
+    /**
+     * Get a single employee record by employee number.
+     * Example: http://localhost:8080/employee?id=10001
+     *
+     * @param id The emp_no of the employee to retrieve.
+     * @return The Employee object if found, or null if not found.
+     */
+    @RequestMapping("/employee")
+    public Employee getEmployee(@RequestParam(value = "id") int id) {
+        try {
+            Statement stmt = con.createStatement();
+            String query = "SELECT emp_no, first_name, last_name, title, salary " +
+                    "FROM employees " +
+                    "WHERE emp_no = " + id;
+
+            ResultSet rset = stmt.executeQuery(query);
+
+            if (rset.next()) {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("emp_no");
+                emp.first_name = rset.getString("first_name");
+                emp.last_name = rset.getString("last_name");
+                emp.title = rset.getString("title");
+                emp.salary = rset.getInt("salary");
+                return emp;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving employee: " + e.getMessage());
+            return null;
+        }
+    }
+
 
 
     /**
@@ -171,4 +216,6 @@ public class App {
 
     public void printSalaries(ArrayList<Employee> employess) {
     }
+
+
 }
