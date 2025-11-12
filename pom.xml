@@ -4,9 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.napier.sem</groupId>
-    <artifactId>alpha</artifactId>
-    <version>0.1.0.3</version>
+
+    <groupId>com.napier</groupId>
+    <artifactId>devops</artifactId>
+    <version>1.0.0</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.5.RELEASE</version>
+    </parent>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
@@ -28,6 +35,8 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.18</version>
         </dependency>
+
+        <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -35,11 +44,33 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring Boot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Compiler plugin to set Java version -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>devops</finalName>
+                    <mainClass>com.napier.devops.App</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -50,7 +81,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Assembly plugin to create fat JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -65,7 +95,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <appendAssemblyId>false</appendAssemblyId> <!-- fix case -->
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>
@@ -78,21 +108,18 @@
                 </executions>
             </plugin>
 
-            <!-- Jar plugin - no skip -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.1</version>
             </plugin>
 
-            <!-- Surefire for tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
             </plugin>
 
-            <!-- Optional: Jacoco for coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -112,8 +139,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
 </project>
