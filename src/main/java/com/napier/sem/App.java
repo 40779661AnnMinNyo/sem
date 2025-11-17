@@ -3,17 +3,17 @@ package com.napier.sem;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
 import java.sql.*;
 import java.util.ArrayList;
-
-@SpringBootApplication
-@RestController
+//
+//@SpringBootApplication
+//@RestController
 
 public class App {
     /**
@@ -71,45 +71,45 @@ public class App {
     /**
      * Gets a list of employees by role (e.g., 'Manager')
      */
-    public ArrayList<Employee> getSalariesByRole(@RequestParam String title) {
-        ArrayList<Employee> employees = new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            String query =
-                    "SELECT employees.emp_no, employees.first_name, employees.last_name, " +
-                            "titles.title, salaries.salary, departments.dept_name, dept_manager.emp_no AS manager " +
-                            "FROM employees, salaries, titles, departments, dept_emp, dept_manager " +
-                            "WHERE employees.emp_no = salaries.emp_no " +
-                            "AND salaries.to_date = '9999-01-01' " +
-                            "AND titles.emp_no = employees.emp_no " +
-                            "AND titles.to_date = '9999-01-01' " +
-                            "AND dept_emp.emp_no = employees.emp_no " +
-                            "AND dept_emp.to_date = '9999-01-01' " +
-                            "AND departments.dept_no = dept_emp.dept_no " +
-                            "AND dept_manager.dept_no = dept_emp.dept_no " +
-                            "AND dept_manager.to_date = '9999-01-01' " +
-                            "AND titles.title = '" + title + "'";
-
-            ResultSet rset = stmt.executeQuery(query);
-
-            while (rset.next()) {
-                Employee emp = new Employee();
-                emp.emp_no = rset.getInt("emp_no");
-                emp.first_name = rset.getString("first_name");
-                emp.last_name = rset.getString("last_name");
-                emp.title = rset.getString("title");
-                emp.salary = rset.getInt("salary");
-                emp.dept_name = rset.getString("dept_name");
-                emp.manager = rset.getString("manager");
-                employees.add(emp);
-            }
-            rset.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Failed to retrieve employees by role.");
-        }
-        return employees;
-    }
+//    public ArrayList<Employee> getSalariesByRole(@RequestParam String title) {
+//        ArrayList<Employee> employees = new ArrayList<>();
+//        try {
+//            Statement stmt = con.createStatement();
+//            String query =
+//                    "SELECT employees.emp_no, employees.first_name, employees.last_name, " +
+//                            "titles.title, salaries.salary, departments.dept_name, dept_manager.emp_no AS manager " +
+//                            "FROM employees, salaries, titles, departments, dept_emp, dept_manager " +
+//                            "WHERE employees.emp_no = salaries.emp_no " +
+//                            "AND salaries.to_date = '9999-01-01' " +
+//                            "AND titles.emp_no = employees.emp_no " +
+//                            "AND titles.to_date = '9999-01-01' " +
+//                            "AND dept_emp.emp_no = employees.emp_no " +
+//                            "AND dept_emp.to_date = '9999-01-01' " +
+//                            "AND departments.dept_no = dept_emp.dept_no " +
+//                            "AND dept_manager.dept_no = dept_emp.dept_no " +
+//                            "AND dept_manager.to_date = '9999-01-01' " +
+//                            "AND titles.title = '" + title + "'";
+//
+//            ResultSet rset = stmt.executeQuery(query);
+//
+//            while (rset.next()) {
+//                Employee emp = new Employee();
+//                emp.emp_no = rset.getInt("emp_no");
+//                emp.first_name = rset.getString("first_name");
+//                emp.last_name = rset.getString("last_name");
+//                emp.title = rset.getString("title");
+//                emp.salary = rset.getInt("salary");
+//                emp.dept_name = rset.getString("dept_name");
+//                emp.manager = rset.getString("manager");
+//                employees.add(emp);
+//            }
+//            rset.close();
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            System.out.println("Failed to retrieve employees by role.");
+//        }
+//        return employees;
+//    }
 
     /**
      * Outputs employee list to Markdown
@@ -167,32 +167,32 @@ public class App {
      * @param id The emp_no of the employee to retrieve.
      * @return The Employee object if found, or null if not found.
      */
-    @RequestMapping("/employee")
-    public Employee getEmployee(@RequestParam(value = "id") int id) {
-        try {
-            Statement stmt = con.createStatement();
-            String query = "SELECT emp_no, first_name, last_name, title, salary " +
-                    "FROM employees " +
-                    "WHERE emp_no = " + id;
-
-            ResultSet rset = stmt.executeQuery(query);
-
-            if (rset.next()) {
-                Employee emp = new Employee();
-                emp.emp_no = rset.getInt("emp_no");
-                emp.first_name = rset.getString("first_name");
-                emp.last_name = rset.getString("last_name");
-                emp.title = rset.getString("title");
-                emp.salary = rset.getInt("salary");
-                return emp;
-            } else {
-                return null;
-            }
-        } catch (SQLException e) {
-            System.out.println("Error retrieving employee: " + e.getMessage());
-            return null;
-        }
-    }
+//    @RequestMapping("/employee")
+//    public Employee getEmployee(@RequestParam(value = "id") int id) {
+//        try {
+//            Statement stmt = con.createStatement();
+//            String query = "SELECT emp_no, first_name, last_name, title, salary " +
+//                    "FROM employees " +
+//                    "WHERE emp_no = " + id;
+//
+//            ResultSet rset = stmt.executeQuery(query);
+//
+//            if (rset.next()) {
+//                Employee emp = new Employee();
+//                emp.emp_no = rset.getInt("emp_no");
+//                emp.first_name = rset.getString("first_name");
+//                emp.last_name = rset.getString("last_name");
+//                emp.title = rset.getString("title");
+//                emp.salary = rset.getInt("salary");
+//                return emp;
+//            } else {
+//                return null;
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Error retrieving employee: " + e.getMessage());
+//            return null;
+//        }
+//    }
 
 
 
@@ -213,6 +213,11 @@ public class App {
 
         app.disconnect();
     }
+
+    private ArrayList<Employee> getSalariesByRole(String manager) {
+        return null;
+    }
+
 
     public void printSalaries(ArrayList<Employee> employess) {
     }
